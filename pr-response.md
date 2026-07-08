@@ -4,8 +4,8 @@
 <!-- Fill in at the end — how you used AI tools during this project -->
 
 ## Comment 1 — Rename
-**What I did:**
-**How I verified:**
+**What I did:** Renamed save_to_watchlist() to add_to_watchlist() in services/watchlist_service.py. Updated all references to use the new function name, including the call in routes/watchlist/watchlist.py.
+**How I verified:** Confirmed that a project-wide search returned no remaining occurrences of save_to_watchlist(). Ran pytest on tests/test_collection.py
 
 ## Comment 2 — Deduplication
 **What I did:**
