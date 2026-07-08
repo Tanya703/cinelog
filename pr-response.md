@@ -47,16 +47,19 @@ catch {
     $_.ErrorDetails.Message
 }
 ```
-For comment 3 i used github copilot autocomplete to adjust test_collection.py file content to create similar tests for test_watchlist.py. I also used claude when i got an import error when running pytest to spot a missing import instance.
+For Comment 3 i used github copilot autocomplete to adjust test_collection.py file content to create similar tests for test_watchlist.py. I also used claude when i got an import error when running pytest to spot a missing import instance.
+
+For Comment 4 i used prompt "What counterargument would a careful code reviewer raise against this position? What tradeoff am I not acknowledging?" to challenge my position
 
 ## Comment 3 — Missing test
 **What I did:** Created a test_watchlist.py with two tests test_add_to_watchlist_duplicate_raises and test_add_to_watchlist_nonexistent_film_raises that test if the error is raised when added a duplicate to the watchlist and if adding nonexistent film raises an error respectively.
 **How I verified:** I ran pytest for services/test_watchlist.py
 
 ## Comment 4 — Default visibility
-**My position:**
+**My position:** The watchlist should remain public by default
 **Reasoning:**
-**Tradeoff acknowledged:**
+A watchlist that's private-by-default in a social film-logging app means the network-effect feature (discovery, "what are my friends watching") starts empty. Public default is how you bootstrap the social graph and get engagement. Watchlist also doesn't contain any sensetive information. 
+**Tradeoff acknowledged:** The decision is made for users and deprives users from the ability to control settings of the publicity of their watchlist. The feature that would alow users to toggle and change the access would address this concern.
 
 ## Comment 5 — Sort order
 **My position:**
