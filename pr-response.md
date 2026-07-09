@@ -5,6 +5,18 @@
 
 I used Claude for Comment 2 to explain how deduplication works in add_to_collection() to apply the same logic to add_to_watchlist(). I also used Cluaude to write a curl command to verify if the add_to_watchlist will throw an error for duplicates.
 
+For Comment 3 i used github copilot autocomplete to adjust test_collection.py file content to create similar tests for test_watchlist.py. I also used claude when i got an import error when running pytest to spot a missing import instance.
+
+For Comment 4 and 5 i used prompt "What counterargument would a careful code reviewer raise against this position? What tradeoff am I not acknowledging?" to challenge my position
+
+For Comment 4 Claude gave interesting point about social graph and network effect that are important for engagement on social apps which is a strong arguement against making lists private by default. I used this point for my reasoning when writing my response to the review.
+
+For Comment 5 Claude listed strong points to support the reviewer stance on sorting the watch;ist by date added. The points included  
+
+-A watchlist is a queue, not an encyclopedia. The mental model of "films I want to watch" is temporal: what did I just add? and what's been rotting at the bottom for a year? 
+-Alphabetical buries intent. The film you added 30 seconds ago could land on page 3 because its title starts with "Z". That's a surprising, almost hostile result right after the user's action — the thing they just did is invisible.
+-Title sort has locale/article bugs. Film.title.asc() is a raw string sort: "The Godfather" files under T, "Æon Flux" and lowercase/accented titles sort unpredictably, and collation is DB-dependent. Date sort has none of this.
+
 ## Comment 1 — Rename
 **What I did:** Renamed save_to_watchlist() to add_to_watchlist() in services/watchlist_service.py. Updated all references to use the new function name, including the call in routes/watchlist/watchlist.py.
 **How I verified:** Confirmed that a project-wide search returned no remaining occurrences of save_to_watchlist(). Ran pytest on tests/test_collection.py
@@ -47,9 +59,6 @@ catch {
     $_.ErrorDetails.Message
 }
 ```
-For Comment 3 i used github copilot autocomplete to adjust test_collection.py file content to create similar tests for test_watchlist.py. I also used claude when i got an import error when running pytest to spot a missing import instance.
-
-For Comment 4 i used prompt "What counterargument would a careful code reviewer raise against this position? What tradeoff am I not acknowledging?" to challenge my position
 
 ## Comment 3 — Missing test
 **What I did:** Created a test_watchlist.py with two tests test_add_to_watchlist_duplicate_raises and test_add_to_watchlist_nonexistent_film_raises that test if the error is raised when added a duplicate to the watchlist and if adding nonexistent film raises an error respectively.
