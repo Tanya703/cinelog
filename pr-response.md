@@ -62,9 +62,9 @@ A watchlist that's private-by-default in a social film-logging app means the net
 **Tradeoff acknowledged:** The decision is made for users and deprives users from the ability to control settings of the publicity of their watchlist. The feature that would alow users to toggle and change the access would address this concern.
 
 ## Comment 5 — Sort order
-**My position:**
-**Reasoning:**
-**Engagement with reviewer's point:**
+**My position:** The watchlist is sorted by date added in descending order
+**Reasoning:** The watchlist sorted by date brings more value to users as users want to see what they added recently.
+**Engagement with reviewer's point:** Although it is easier for users to find the film when they are sorted alphabetically, users often check what they added recently which make the sorting by date more convinient.
 
 ## Comment 6 — Rebase
 **What conflicted:**
