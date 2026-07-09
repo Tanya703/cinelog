@@ -105,3 +105,6 @@ Rebasing onto `main` surfaced a `.gitignore` conflict (resolved manually) and a 
 3. Add the same film again — expect `409` with `AlreadyInWatchlistError` (see the curl/PowerShell script under Comment 2).
 4. `GET` the watchlist — confirm films return newest-first with `public: true`.
 5. Run `pytest` — all watchlist and collection tests pass.
+
+## Screenshot
+![Screenshot](Screenshot.png)
