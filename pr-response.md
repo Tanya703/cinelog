@@ -76,9 +76,32 @@ A watchlist that's private-by-default in a social film-logging app means the net
 **Engagement with reviewer's point:** Although it is easier for users to find the film when they are sorted alphabetically, users often check what they added recently which make the sorting by date more convinient.
 
 ## Comment 6 — Rebase
-**What conflicted:**
-**How I resolved it:**
-**How I verified no conflict remains:**
+**What conflicted:** .gitignore
+**How I resolved it:** I compared two files and manually adjusted a 1 line difference. 
+**How I verified no conflict remains:** After rebase i tried running pytest and failed. so i started looking closely in the difference between my contributions and other contributors. i found that the commit 07ca580 refactor: migrate film IDs from integer to UUID — which lives on main, not your branch — removed the whole WatchlistEntry class. SO it was a semantic conflict that i didn't notice. So i readded WatchlistEntry with updated UUID
 
 ## PR Description
-<!-- Written at the end — feature overview, design decisions, manual testing steps -->
+
+### Overview
+This PR adds a **watchlist** feature to CineLog, letting a user save films they want to watch (distinct from the collection, which logs films already watched). It introduces the `WatchlistEntry` model, a service layer (`services/watchlist_service.py`), and a route (`routes/watchlist/watchlist.py`), following the same structure as the existing collection feature.
+
+### What's included
+- **`add_to_watchlist(user_id, film_id)`** — saves a film to a user's watchlist. Raises `FilmNotFoundError` if the film doesn't exist and `AlreadyInWatchlistError` if it's already saved (deduplication mirrors `add_to_collection`).
+- **`get_watchlist(user_id)`** — returns the user's watchlist films with `date_added` and `public` metadata attached, sorted by most recently added.
+- **`WatchlistEntry` model** — `id`, `user_id`, `film_id` (all UUID strings), `date_added`, and a `public` visibility flag. A `Film.watchlist_entries` relationship exposes `entry.film`.
+- **Tests** — `test_add_to_watchlist_duplicate_raises` and `test_add_to_watchlist_nonexistent_film_raises`.
+
+### Design decisions
+- **Visibility defaults to public** (`public=True`). In a social film-logging app, a private-by-default watchlist starts the discovery/"what are friends watching" features empty; a public default bootstraps the social graph, and a watchlist carries no sensitive data. Acknowledged trade-off: it decides visibility on the user's behalf — a future per-list toggle would restore that control. (See Comment 4.)
+- **Sorted by `date_added` descending.** A watchlist is a queue, not an encyclopedia — users care most about what they just added, and alphabetical order buries recent intent and has locale/article sorting quirks. (See Comment 5.)
+- **UUID film IDs.** `WatchlistEntry.film_id` is `String(36)` to match `Film.id` and `CollectionEntry.film_id` after the integer→UUID migration on `main`.
+
+### Rebase note
+Rebasing onto `main` surfaced a `.gitignore` conflict (resolved manually) and a **silent semantic conflict**: `main`'s UUID migration (`07ca580`) had deleted the `WatchlistEntry` class, and because this branch never edited that block, git replayed the deletion without flagging a conflict. Restored `WatchlistEntry` (with UUID `film_id`) and confirmed the branch history is linear with no merge commits. (See Comment 6.)
+
+### Manual testing
+1. Start the API (`flask run`, port 5001).
+2. Add a film to a watchlist — expect `201`.
+3. Add the same film again — expect `409` with `AlreadyInWatchlistError` (see the curl/PowerShell script under Comment 2).
+4. `GET` the watchlist — confirm films return newest-first with `public: true`.
+5. Run `pytest` — all watchlist and collection tests pass.
